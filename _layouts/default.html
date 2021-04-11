@@ -4,14 +4,6 @@
     <title>vdf.dev</title>
     <meta charset="utf-8" />
     <style>
-      body {
-        background-color: black;
-        color: white;
-        font: Verdana, sans-serif;
-      }
-      a {
-        color: white;
-      }
       html, body, div, span, applet, object, iframe,
       h1, h2, h3, h4, h5, h6, p, blockquote,
       a, abbr, acronym, address, big, cite, code,
@@ -28,9 +20,16 @@
       	margin: 0;
       	padding: 0;
       	border: 0;
-      	font-size: 100%;
-      	font: inherit;
+      	font-size: 100%
+        font: Verdana, sans-serif;
       	vertical-align: baseline;
+      }
+      body {
+        background-color: black;
+        color: white;
+      }
+      a {
+        color: white;
       }
     </style>
   </head>
@@ -44,6 +43,6 @@ __   ____| |/ _| __| | _____   __
   \_/ \__,_|_|(_)__,_|\___| \_/
       </pre>
     </a>
-    <pre>{{ content }}</pre>
+    {{ content }}
   </body>
 </html>
