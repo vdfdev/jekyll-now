@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>vdf.dev</title>
-    <meta charset="utf-8" />
+    <title>{% if page.title %}{{ page.title }} – {% endif %}vdf.dev</title>
+    {% include meta.html %}
     <style>
       html, body, div, span, applet, object, iframe,
       h1, h2, h3, h4, h5, h6, p, blockquote,
