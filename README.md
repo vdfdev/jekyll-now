@@ -1,3 +1,5 @@
- `gem install github-pages` 
+`gem install bundler`
+
+`gem install github-pages` 
  
  `jekyll serve`
