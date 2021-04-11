@@ -3,9 +3,9 @@ layout: default
 ---
 
 {% for post in site.posts %}
-  <article>
-    <h1>--- <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> ---</h1>
-    {{ post.excerpt }}
-    <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
-  </article>
+<article>
+<h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
+{{ post.excerpt }}
+<a href="{{ site.baseurl }}{{ post.url }}">Read More</a>
+</article>
 {% endfor %}
