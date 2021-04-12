@@ -6,7 +6,7 @@ title: Projects
 
 ## FreeBoardGames.org
 
-[FreeBoardGames.org](https://freeboardgames.org) is a FOSS publishing platform for [boardgame.io](https://boardgame.io) games. The idea is to foster a community of game developers that can create board games as a hobby, benefiting everyone by doing it together. Developers get more users and less infrastructure overhead compared to doing games on their own. Dozens of developers have contributed to the project and the website have reached over 30,000 monthly active users.
+[FreeBoardGames.org](https://freeboardgames.org) is a FOSS publishing platform for [boardgame.io](https://boardgame.io) games. The idea is to foster a community of game developers that can create board games as a hobby, benefiting everyone by doing it together. Developers get more users and less infrastructure overhead compared to doing games on their own. Dozens of developers have contributed to the project and the website has reached over 30,000 monthly active users.
 
 ## vdf.dev
 
