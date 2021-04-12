@@ -13,7 +13,7 @@ I wanted to create a blog to share this knowledge, with these requirements:
 - **Minimalist**. I want it to be minimalist, both visually and in functionality.
 - **Good ergonomics**. I want to be able to write markdown and have a fairly well formatted website, instead of writing HTML directly.
 
-I was aware about [GitHub pages](https://pages.github.com/) that lets you host a static website directly from a GitHub repository. This fitted my needs really well, as it would abstract away most of the work of running a website, and I can easily migrate it to my own servers if need in the future.
+I was aware about [GitHub pages](https://pages.github.com/) that lets you host a static website directly from a GitHub repository. This fitted my needs really well, as it would abstract away most of the work of running a website, and I can easily migrate it to my own servers if I desire in the future.
 
 However, GitHub pages requires the content to be in HTML, and that was not ergonomic enough for me to write a blog with. My first inclination was to write some simple code to convert the markdown files into HTML, and automatically build it with [GitHub actions](https://github.com/features/actions). This started to get more complicated as I started thinking about how to code basic features like the page listing the posts, and the re-usage of the layout on all the pages. I wanted to focus on writing to humans in this project, not writing more code. 
 
@@ -28,7 +28,7 @@ layout: foo
 ---
 ```
 to the header of the pages or other layouts you want to use it. The page will replace `{% raw %}{{content}}{% endraw %}` on the layout file.
-- **Posts Page**: Markdown files created on the `_posts` folder with the format `YYYY-MM-DD-Title.md` will create a blog post. The posts URL can be set with the `permalink` configuration. In this website, I have the permalink configured to be `/blog/:title/`, so a file named `_posts/2021-01-01-Hello-World.md` will have the link `/blog/Hello-World.
+- **Posts Page**: Markdown files created on the `_posts` folder with the format `YYYY-MM-DD-Title.md` will create a blog post. The posts URL can be set with the `permalink` configuration. In this website, I have the permalink configured to be `/blog/:title/`, so a file named `_posts/2021-01-01-Hello-World.md` will have the link `/blog/Hello-World`.
 - **Posts Summary**: You can loop through each post using the `site.posts` variable in any page, and each post will have a `title`, and also an automatically generated `excerpt` to use on the page listing all posts.
 - **Automatic push**: [Jekyll Now](https://github.com/barryclark/jekyll-now) comes with a pre-built Github Actions to automatically build the website, which in turn reflects on your Github Page in seconds after changing any file. No Terminal required :).
 - **Development environment**: For quickly making changes on your local machine and seeing the results, you only need to install ruby 2.7, this gem: `gem install github-pages` and run `jekyll serve`
