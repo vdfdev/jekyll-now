@@ -35,4 +35,4 @@ to the header of the pages or other layouts you want to use it. The page will re
 
 All in all, using [Jekyll Now](https://github.com/barryclark/jekyll-now) and removing its bloat has been a great solution that gave me the flexibility that I wanted with little to no overhead.  You can see the [final code for this blog here](https://github.com/vdfdev/vdf.dev).
 
-**UPDATE**: I received great feedback from the HackerNews community that Jekyll Now is no longer maintained, while mainline Jekyll is. I will follow up later to see what (maintaned) alternatives exist that meets the same requirements, or if we can help the maintainers.
+**UPDATE**: I received [great feedback](https://news.ycombinator.com/item?id=26776210) from the HackerNews community that Jekyll Now is no longer maintained, while mainline Jekyll is. I will follow up later to see what (maintaned) alternatives exist that meets the same requirements, or if we can help the maintainers.
