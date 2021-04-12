@@ -5,7 +5,7 @@ title: Creating a minimalist blog with Jekyll Now.
 
 In this post, I share why I chose [Jekyll Now](https://github.com/barryclark/jekyll-now) and [Github Pages](https://pages.github.com/) to build this blog.
 
-As I grow older, I have accumulated dozens of side projects that I have done or tried to do. Most of them fail or don't get beyond a quick prototype. Nevertheless, in almost all of them I have learned some new technology, and in the end these learnings are the most valuable result of these side projects.
+As I grow older, I have accumulated dozens of side projects that I have done or tried to do. Most of them fail or don't go beyond a quick prototype. Nevertheless, in almost all of them I have learned some new technology, and in the end these learnings are the most valuable result of these side projects.
 
 I wanted to create a blog to share this knowledge, with these requirements:
 - **Full control the web page**. Instead of using a hosted service like Facebook or Medium, as I strongly believe in a decentralized web.
