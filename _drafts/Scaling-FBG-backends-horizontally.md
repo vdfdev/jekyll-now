@@ -10,7 +10,7 @@ In this post, I describe how we were able to scale the [FreeBoardGames.org](http
 However, this growth spurt brought me some worry that we might not be able to sustain another wave of growth with its current architecture.
 
 - We have to run as cheaply as possible as we do not generate any revenue. It is better for us to focus on horizontally scaling as opposed to vertically scaling because machines get more expensive the less commodity they are, as a rule of thumb.
-- We need high availability. We almost always have dozens of people online on the website playing games, most in multiplayer games. The majority of our traffic comes from organic search results, so not being available will hurt future user growth.
+- We need high availability. We almost always have dozens of people online on the website playing games, most in multiplayer games. The majority of our traffic comes from organic search results, so not being available will hurt future growth.
 - Bottlenecks became apparent when the single instance of _fbg-server_ crashed without failing its liveness probe and users were unable to start matches (see [issue #773](https://github.com/freeboardgames/FreeBoardGames.org/issues/773)).  
 
 # Bottlenecks for horizontally scaling
