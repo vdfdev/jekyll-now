@@ -1,22 +1,3 @@
-p, h1, h2, h3, h4, h5, h6 {
-  padding-bottom: 16px;
-}
-li {
-  padding-bottom: 8px;
-}
-
-.highlight {
-  background-color: white;
-  padding: 1px;
-  margin: 12px 6px;
-}
-
-code {
-  padding: 1px;
-  background-color: white;
-  color: black;
-}
-
 .highlight .c { color: #586E75 } /* Comment */
 .highlight .err { color: #93A1A1 } /* Error */
 .highlight .g { color: #93A1A1 } /* Generic */
