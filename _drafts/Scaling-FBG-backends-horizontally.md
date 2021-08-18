@@ -189,7 +189,7 @@ My hypothesis is that we are keeping some state on the memory of the server, and
 Does anybody know what state we keep in-memory on the server? (...)
 ```
 
-And bingo, the amazing [Chris Swithinbank](https://github.com/delucis/) replied with this:
+And bingo, the always helpful [Chris Swithinbank](https://github.com/delucis/) replied with this:
 ```
 Ohhh, might it be to do with the way we emit update events to everyone? Basic schema is:
 
@@ -220,4 +220,10 @@ But... Why wasn't boardgame.io using a [socket.io room](https://socket.io/docs/v
 ```
 (...) One thing we do is store the player ID for each client so that we can run the playerView for each of them when updating state. (...)
 ```
+
+*playerView* is the function that allows a very popular feature in boardgame.io: [Secret state](https://boardgame.io/documentation/#/secret-state?id=secret-state). It inhibits cheating by only sending the relevant subset of the state for each player. For instance, if you were playing poker, we would not send the poker hands of your adversaries to your browser. This would only be known by the server.
+
+However, this feature/requirement made so each player receives a different message from the server, and when implemented the boardgame.io library abandoned the usage of socket.io rooms. My first idea to fix this issue was to move the memory state of which players are connected to what match to the database. At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
+
+
 
