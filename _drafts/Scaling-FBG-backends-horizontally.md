@@ -157,3 +157,24 @@ https://dev.to/thisdotmedia/graphql-subscriptions-with-nest-how-to-publish-acros
 In summary, we had to use [graphql-redis-subscriptions](https://github.com/davidyaha/graphql-redis-subscriptions) npm library to create a new `FbgPubSubModule`, which provides an specific implementation for GraphQL's `PubSub` interface. After that, we had to replace all the previous injections of the default GraphQL `PubSub` to use the new one, by annotating them with `    @Inject(FBG_PUB_SUB)` and removing the previous PubSub module. Lastly, we had to make sure we provided the correct host name and port of the redis service to the deployment running `fbg-server`. You can [see the full PR here](https://github.com/freeboardgames/FreeBoardGames.org/pull/794/files).
 
 ## Scaling bgio: Contributing upstream to boardgame.io
+
+All in all, scaling NestJS and the GraphQL subscriptions was a painless experience. I knew [boardgame.io](https://boardgame.io/) did not have built-in horizontally scaling support, because, well, nobody ever needed it. Therefore, I was expecting a bit more work there as we would probably need to change some APIs on the upstream library...
+
+However, I also knew that [boardgame.io uses socket.io](https://github.com/boardgameio/boardgame.io/blob/main/src/server/transport/socketio.ts) under the hood. And there are [plenty of guides online](https://socket.io/docs/v4/redis-adapter/) on how to use Redis pub/sub to scale socket.io to multiple servers.
+
+<pre>
+ __________
+ |        |
+ |  bgio  |
+ |        |
+ ^^^^^^^^^^ 
+ ▲
+ | Pub/sub
+ ▼   
+ ___________ 
+ |         |
+ |  Redis  |
+ |         |
+ ^^^^^^^^^^^
+</pre>
+
