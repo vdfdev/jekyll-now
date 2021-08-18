@@ -290,8 +290,8 @@ Then, looking at the [boardgame.io code](https://github.com/boardgameio/boardgam
       ▼
 newG = previousG + move
   __________
-  |        | --- playerView(newG, 0) ---> Player 0
-  |  bgio  | --- playerView(newG, 1) ---> Player 1
+  |        | 
+  |  bgio  |
   |   0    | 
   ^^^^^^^^^^ 
       | Pub (newG)
@@ -301,13 +301,18 @@ newG = previousG + move
  |  Redis  |
  |         |
  ^^^^^^^^^^^ 
-      | Sub (newG)
-      ▼   
-  __________
-  |        | --- playerView(newG, 2) ---> Player 2
-  |  bgio  | 
-  |   1    |
-  ^^^^^^^^^^   
+ | Sub  | Sub (newG)
+ |      ▼   
+ |  __________
+ |  |        | --- playerView(newG, 0) ---> Player 0
+ |  |  bgio  | --- playerView(newG, 1) ---> Player 1
+ |  |   0    |
+ |  ^^^^^^^^^^   
+ |  __________
+ |  |        | --- playerView(newG, 2) ---> Player 2
+ +->|  bgio  | 
+    |   1    |
+    ^^^^^^^^^^
 </pre>
 
 This had the advantage that we would not need to send more data to the database regarding the metadata of each connection: Each server would only know about the players directly connected to them, and apply the playerView to any new state received for a match the player is in. It also meant that we could *always* publish a *newG* to the pub/sub interface, and *always* calculate the playerView from its subscriptions, and the pub/sub interface could be generic enough to run in-memory for the (most common) case that we do not need to scale horizontally.
