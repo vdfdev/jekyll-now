@@ -318,7 +318,7 @@ Finally, we were able to scale the boardgame.io deployment to multiple pods in p
 ```
 $ kubectl get deployments -n fbg-prod
 NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
-fbg-prod-bgio         **2/2**     2            2           2d2h
-fbg-prod-fbg-server   **2/2**     2            2           2d2h
-fbg-prod-web          **2/2**     2            2           2d2h
+fbg-prod-bgio         2/2     2            2           2d2h
+fbg-prod-fbg-server   2/2     2            2           2d2h
+fbg-prod-web          2/2     2            2           2d2h
 ```
