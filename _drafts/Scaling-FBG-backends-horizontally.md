@@ -223,7 +223,7 @@ But... Why wasn't boardgame.io using a [socket.io room](https://socket.io/docs/v
 
 *playerView* is the function that allows a very popular feature in boardgame.io: [Secret state](https://boardgame.io/documentation/#/secret-state?id=secret-state). It inhibits cheating by only sending the relevant subset of the state for each player. For instance, if you were playing poker, we would not send the poker hands of your adversaries to your browser. This would only be known by the server.
 
-However, this feature/requirement made so each player receives a different message from the server, and its implementation abandoned the usage of socket.io rooms.  At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
+However, this feature/requirement made so each player receives a different message from the server, and its implementation abandoned the usage of socket.io rooms. 
 
 The problem is illustred below. Previously when player A made a move: (G is the game state)
 <pre>
@@ -270,4 +270,9 @@ newG = previousG + move
   ^^^^^^^^^^   
 </pre>
 
-Player 2 which is connected *only* to bgio 1 would not receive any updates from its server, as the server that received the move is not aware at all about its existance.
+Player 2 which is connected *only* to bgio 1 would not receive any updates from its server, as bgio 0 that received the move is not aware at all about the existance of Player 2.
+
+
+To fix this, my initial reaction was to move the metadata about which players that were connected to which servers to the database. However, after thinking a little bit, it was clear that this was not enough, we would still need to send messages across servers, having only the metadata would not enable bgio 0 to send a message to player 2, even if it knew it was connected to bgio 1. At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
+
+
