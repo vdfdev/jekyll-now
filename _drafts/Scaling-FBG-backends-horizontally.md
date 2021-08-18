@@ -314,7 +314,7 @@ newG = previousG + move
     ^^^^^^^^^^
 </pre>
 
-This had the advantage that we would not need to query the database regarding the metadata of each connection: Each server would only know about the players directly connected to them, and apply the `playerView` to any new state received for a match the player is in. It also meant that we could *always* publish a `newG` to the pub/sub interface, and *always* calculate the `playerView` from its subscriptions, and the pub/sub interface could be generic enough to run in-memory for the (most common) case that we do not need to scale horizontally.
+This had the advantage that we would not need to query the database regarding the metadata of each connection: Each server would only know about the players directly connected to them, and apply the `playerView` to any new state received for a match the player is in. It also meant that we could *always* publish a `newG` to the pub/sub interface, and *always* calculate the `playerView` from its subscriptions, and the pub/sub interface could be generic enough to run in-memory for the (most common) case that the boardgame.io user does not need to scale horizontally.
 
 We implemented this idea by first [refactoring the existing interfaces](https://github.com/boardgameio/boardgame.io/pull/966) to postpone the `playerView` calculation to the transport layer, and then [creating a generic pub/sub service and the default in-memory implementation](https://github.com/boardgameio/boardgame.io/pull/978). Then, the [@boardgame.io/redis-pub-sub](https://github.com/boardgameio/redis-pubsub) library was created to hold the pub/sub adapter to redis, which avoided adding any redis dependency directly to the boardgame.io library.
 
