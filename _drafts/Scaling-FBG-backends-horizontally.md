@@ -113,16 +113,9 @@ ______________        _________
 
 # Implementation
 
-## New Redis server
-<pre>
- ___________ 
- |         |
- |  Redis  |
- |         |
- ^^^^^^^^^^^
-</pre>
+## New Redis server and connecting it to fbg-server
 
-The first step is creating a new Redis service. This was also the easiest one because we use Helm, so we just needed to add the [bitnami redis](https://github.com/bitnami/charts/tree/master/bitnami/redis) dependency to our `Chart.yaml`:
+The first step was creating a new Redis service. This was also the easiest one because we use Helm, so we just needed to add the [bitnami redis](https://github.com/bitnami/charts/tree/master/bitnami/redis) dependency to our `Chart.yaml`:
 
 ```
 dependencies:
@@ -140,7 +133,7 @@ redis:
     password: REDIS_FBG_PASSWORD 
 ```
 
-## Connecting fbg-server with Redis
+Then, we needed to connect the existing `fbg-server` to Redis to allow it to horizontally scale:
 
 <pre>
  ________________
@@ -158,7 +151,9 @@ redis:
  ^^^^^^^^^^^
 </pre>
 
-Under the hood, our fbg-server uses [NestJS](https://nestjs.com) and [GraphQL subscriptions](https://docs.nestjs.com/graphql/subscriptions). [This article](
+Under the hood, our `fbg-server` uses [NestJS](https://nestjs.com) and [GraphQL subscriptions](https://docs.nestjs.com/graphql/subscriptions). [This article](
 https://dev.to/thisdotmedia/graphql-subscriptions-with-nest-how-to-publish-across-multiple-running-servers-15e) was a good step-by-step guide on how to scale horizontally this setup. 
+
+In summary, we had to use `graphql-redis-subscriptions` npm library to create a new `FbgPubSubModule`, which provides an specific implementation for the GraphQL `PubSub` interface. After that, we had to replace all the previous injections of the default GraphQL `PubSub` to use the new one, by annotating them with `    @Inject(FBG_PUB_SUB)` and removing the previous PubSub module.
 
 # Scaling bgio: Contributing upstream to boardgame.io
