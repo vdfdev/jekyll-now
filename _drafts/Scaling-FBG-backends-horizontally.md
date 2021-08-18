@@ -227,7 +227,6 @@ However, this feature/requirement made so each player receives a different messa
 
 Previously when player A made a move: (G is the game state)
 <pre>
- 
  ______________
  |            |
  |  Postgres  |
