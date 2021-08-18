@@ -214,3 +214,10 @@ roomInfo = {                  roomInfo = {
 
 In this case, server 1 doesn’t know about client 2 and server 2 doesn’t know about client 1, so the two clients won’t actually emit to each other.
 ```
+
+But... Why wasn't boardgame.io using a [socket.io room](https://socket.io/docs/v3/rooms/index.html) per match instead of sending a separate message to each connected player? If that was the case, everything would work out of the box. Chris replied:
+
+```
+(...) One thing we do is store the player ID for each client so that we can run the playerView for each of them when updating state. (...)
+```
+
