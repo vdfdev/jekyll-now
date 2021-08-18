@@ -223,9 +223,9 @@ But... Why wasn't boardgame.io using a [socket.io room](https://socket.io/docs/v
 
 *playerView* is the function that allows a very popular feature in boardgame.io: [Secret state](https://boardgame.io/documentation/#/secret-state?id=secret-state). It inhibits cheating by only sending the relevant subset of the state for each player. For instance, if you were playing poker, we would not send the poker hands of your adversaries to your browser. This would only be known by the server.
 
-However, this feature/requirement made so each player receives a different message from the server, and its implementation abandoned the usage of socket.io rooms. My first idea to fix this issue was to move the in-memory metadata of which players are connected to which matches to the database. But thinking about it, this would not be enough, as each player is connected to a single server, so server A would not be able to send direct messages to a player connected on server B ... At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
+However, this feature/requirement made so each player receives a different message from the server, and its implementation abandoned the usage of socket.io rooms.  At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
 
-Previously when player A made a move: (G is the game state)
+The problem is illustred below. Previously when player A made a move: (G is the game state)
 <pre>
  ______________
  |            |
@@ -244,5 +244,30 @@ newG = previousG + move
   ^^^^^^^^^^ 
 </pre>
 
+The single server would know all the players connected to the match and send a specific messages to each, the result of the playerView function. Naively using multiple servers:
 
+<pre>
+ ______________
+ |            |
+ |  Postgres  |
+ |            |
+ ^^^^^^^^^^^^^^
+      |
+      | previousG
+      |
+      ▼
+newG = previousG + move
+  __________
+  |        | --- playerView(newG, 0) ---> Player 0
+  |  bgio  | --- playerView(newG, 1) ---> Player 1
+  |   0    | 
+  ^^^^^^^^^^ 
 
+  __________
+  |        | <- x -> Player 2
+  |  bgio  | 
+  |   1    |
+  ^^^^^^^^^^   
+</pre>
+
+Player 2 which is connected *only* to bgio 1 would not receive any updates from its server, as the server that received the move is not aware at all about its existance.
