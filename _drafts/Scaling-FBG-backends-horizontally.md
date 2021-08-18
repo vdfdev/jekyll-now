@@ -223,7 +223,9 @@ But... Why wasn't boardgame.io using a [socket.io room](https://socket.io/docs/v
 
 *playerView* is the function that allows a very popular feature in boardgame.io: [Secret state](https://boardgame.io/documentation/#/secret-state?id=secret-state). It inhibits cheating by only sending the relevant subset of the state for each player. For instance, if you were playing poker, we would not send the poker hands of your adversaries to your browser. This would only be known by the server.
 
-However, this feature/requirement made so each player receives a different message from the server, and when implemented the boardgame.io library abandoned the usage of socket.io rooms. My first idea to fix this issue was to move the memory state of which players are connected to what match to the database. At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
+However, this feature/requirement made so each player receives a different message from the server, and its implementation abandoned the usage of socket.io rooms. My first idea to fix this issue was to move the in-memory metadata of which players are connected to which matches to the database. But thinking about it, this would not be enough, as each player is connected to a single server, so server A would not be able to send direct messages to a player connected on server B ... At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
+
+
 
 
 
