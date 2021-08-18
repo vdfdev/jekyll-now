@@ -10,7 +10,7 @@ In this post, I describe how we were able to scale the [FreeBoardGames.org](http
 However, this growth spurt brought me some worry that we might not be able to sustain another wave of growth with its current architecture.
 
 - We have to run as cheaply as possible as we do not generate any revenue. It is better for us to focus on horizontally scaling as opposed to vertically scaling because machines get more expensive the less commodity they are, as a rule of thumb.
-- We need high availability. We almost always have dozens of people online on the website playing games, most in multiplayer games. The majority of our traffic comes from organic search results, so low availability hurts growth.
+- We need high availability. We almost always have dozens of people online on the website playing games, most in multiplayer games. If we don't have redundancy on a single server, we can't update its software without downtime. The majority of our traffic comes from organic search results, so low availability also hurts growth.
 - Bottlenecks became apparent when the single instance of _fbg-server_ crashed without failing its liveness probe and users were unable to start matches (see [issue #773](https://github.com/freeboardgames/FreeBoardGames.org/issues/773)).  
 - It is also fun to over-engineer side-projects and learn new technologies :).
 
@@ -111,13 +111,54 @@ ______________        _________
                       ^^^^^^^^^^^
 </pre>
 
-## Adding Redis to our HELM chart
+# Implementation
 
-Foo
+## New Redis server
+<pre>
+ ___________ 
+ |         |
+ |  Redis  |
+ |         |
+ ^^^^^^^^^^^
+</pre>
 
-## Scaling fbg-server: Connecting GraphQL subscriptions to Redis
+The first step is creating a new Redis service. This was also the easiest one because we use Helm, so we just needed to add the [bitnami redis](https://github.com/bitnami/charts/tree/master/bitnami/redis) dependency to our `Chart.yaml`:
 
-Reference:
-https://dev.to/thisdotmedia/graphql-subscriptions-with-nest-how-to-publish-across-multiple-running-servers-15e
+```
+dependencies:
+(...)
+- name: redis 
+  version: "14.1.0"
+  repository: "https://charts.bitnami.com/bitnami"
+```
+
+The only configuration that was needed was setting the password on `values.yaml`:
+
+```
+redis:
+  auth:
+    password: REDIS_FBG_PASSWORD 
+```
+
+## Connecting fbg-server with Redis
+
+<pre>
+ ________________
+ |              |
+ |  fbg-server  |
+ |              |
+ ^^^^^^^^^^^^^^^^ 
+ ▲
+ | Pub/sub
+ ▼   
+ ___________ 
+ |         |
+ |  Redis  |
+ |         |
+ ^^^^^^^^^^^
+</pre>
+
+Under the hood, our fbg-server uses [NestJS](https://nestjs.com) and [GraphQL subscriptions](https://docs.nestjs.com/graphql/subscriptions). [This article](
+https://dev.to/thisdotmedia/graphql-subscriptions-with-nest-how-to-publish-across-multiple-running-servers-15e) was a good step-by-step guide on how to scale horizontally this setup. 
 
 # Scaling bgio: Contributing upstream to boardgame.io
