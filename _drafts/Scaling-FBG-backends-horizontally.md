@@ -225,7 +225,7 @@ But... Why wasn't boardgame.io using a [socket.io room](https://socket.io/docs/v
 
 However, this feature/requirement made so each player receives a different message from the server, and its implementation abandoned the usage of socket.io rooms. 
 
-The problem is illustred below. Previously when player A made a move: (G is the game state)
+The problem is illustred below. Previously when `Player 0` made a move: (G is the game state)
 <pre>
  ______________
  |            |
@@ -244,7 +244,7 @@ newG = previousG + move
   ^^^^^^^^^^ 
 </pre>
 
-The single server would know all the players connected to the match and send a specific messages to each, the result of the playerView function. Naively using multiple servers:
+The single server would know all the players connected to the match and send a specific messages to each, the result of the `playerView` function. Naively using multiple servers:
 
 <pre>
  ______________
@@ -270,13 +270,12 @@ newG = previousG + move
   ^^^^^^^^^^   
 </pre>
 
-Player 2 which is connected *only* to bgio 1 would not receive any updates from its server, as bgio 0 that received the move is not aware at all about the existance of Player 2.
+`Player 2` which is connected *only* to `bgio 1` would not receive any updates from its server, as `bgio 0` that received the move is not aware at all about the existence of `Player 2`.
 
 
-To fix this, my initial reaction was to move the metadata about which players that were connected to which servers to the database. However, after thinking a little bit, it was clear that this was not enough, we would still need to send messages across servers, having only the metadata would not enable bgio 0 to send a message to player 2, even if it knew it was connected to bgio 1. At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
+To fix this, my initial reaction was to move the metadata about which players that were connected to which servers to the database. However, after thinking a little bit, it was clear that this was not enough, we would still need to send messages across servers, having only the metadata would not enable `bgio 0` to send a message to `player 2`, even if it knew it was connected to `bgio 1`. At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
 
 Then, looking at the [boardgame.io code](https://github.com/boardgameio/boardgame.io/pull/966/files), it was clear that the easiest way forward would be the solution below:
-
 
 <pre>
  ______________
@@ -315,9 +314,9 @@ newG = previousG + move
     ^^^^^^^^^^
 </pre>
 
-This had the advantage that we would not need to send more data to the database regarding the metadata of each connection: Each server would only know about the players directly connected to them, and apply the playerView to any new state received for a match the player is in. It also meant that we could *always* publish a *newG* to the pub/sub interface, and *always* calculate the playerView from its subscriptions, and the pub/sub interface could be generic enough to run in-memory for the (most common) case that we do not need to scale horizontally.
+This had the advantage that we would not need to send more data to the database regarding the metadata of each connection: Each server would only know about the players directly connected to them, and apply the `playerView` to any new state received for a match the player is in. It also meant that we could *always* publish a `newG` to the pub/sub interface, and *always* calculate the `playerView` from its subscriptions, and the pub/sub interface could be generic enough to run in-memory for the (most common) case that we do not need to scale horizontally.
 
-We implemented this idea by first [refactoring the existing interfaces](https://github.com/boardgameio/boardgame.io/pull/966) to postpone the playerView calculation to the transport layer, and then [creating a generic pub/sub service and the default in-memory implementation](https://github.com/boardgameio/boardgame.io/pull/978). Then, the [@boardgame.io/redis-pub-sub](https://github.com/boardgameio/redis-pubsub) library was created to hold the pub/sub adapter to redis, which avoided adding any redis dependency directly to the boardgame.io library.
+We implemented this idea by first [refactoring the existing interfaces](https://github.com/boardgameio/boardgame.io/pull/966) to postpone the `playerView` calculation to the transport layer, and then [creating a generic pub/sub service and the default in-memory implementation](https://github.com/boardgameio/boardgame.io/pull/978). Then, the [@boardgame.io/redis-pub-sub](https://github.com/boardgameio/redis-pubsub) library was created to hold the pub/sub adapter to redis, which avoided adding any redis dependency directly to the boardgame.io library.
 
 Finally, we were able to scale the boardgame.io deployment to multiple pods in production a few days ago :tada::
 ```
