@@ -183,7 +183,7 @@ I found out a way to pass the [redis adapter](https://github.com/socketio/socket
 I sent a message to the boardgame.io gitter channel:
 ```
 hello folks... I am trying to scale boardgame.io horizontally, and even though I was able to make the socket.io broadcast to multiple servers using a redis adapter, it doesnt work. My hypothesis is that we are keeping some state on the memory of the server, and that state is not being updated with new messages coming from peer socket.io servers, only when the client is directly connected to it. This would make the in-memory state of different replicas of the same server to drift apart. Does anybody know what state we keep in-memory on the server? (...)
-``
+```
 
 And bingo, the amazing **Chris Swithinbank** replied with this:
 ```
