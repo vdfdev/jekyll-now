@@ -189,7 +189,7 @@ My hypothesis is that we are keeping some state on the memory of the server, and
 Does anybody know what state we keep in-memory on the server? (...)
 ```
 
-And bingo, the amazing **Chris Swithinbank** replied with this:
+And bingo, the amazing [Chris Swithinbank](https://github.com/delucis/) replied with this:
 ```
 Ohhh, might it be to do with the way we emit update events to everyone? Basic schema is:
 
