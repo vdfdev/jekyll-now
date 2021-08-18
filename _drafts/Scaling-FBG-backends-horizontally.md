@@ -3,7 +3,7 @@ layout: post
 title: Scaling FreeBoardGames.org backends horizontally
 ---
 
-In this post, I describe how we were able to scale the [FreeBoardGames.org](https://freeboardgames.org)'s Nest and Boardgame.io backends horizontally using Pub/Sub.
+In this post, I describe how we were able to scale the [FreeBoardGames.org](https://freeboardgames.org)'s [NestJs](https://nestjs.com) and [boardgame.io](https://boardgame.io) backends horizontally using Pub/Sub.
 
 [FreeBoardGames.org](https://freeboardgames.org) is a FOSS project focused on publishing free [boardgame.io](https://boardgame.io) games created by the community, without profits. During the COVID-19 pandemic, we saw significant growth on users (from ~ 1k to up to ~ 30k monthly active users, see [stats here](https://stats.freeboardgames.org)) and developers contributing to the project ([see contributors here](https://www.freeboardgames.org/about)).
 
