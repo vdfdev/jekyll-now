@@ -225,7 +225,25 @@ But... Why wasn't boardgame.io using a [socket.io room](https://socket.io/docs/v
 
 However, this feature/requirement made so each player receives a different message from the server, and its implementation abandoned the usage of socket.io rooms. My first idea to fix this issue was to move the in-memory metadata of which players are connected to which matches to the database. But thinking about it, this would not be enough, as each player is connected to a single server, so server A would not be able to send direct messages to a player connected on server B ... At that point, I got lazy and stopped working in this project for some months, as it was shaping to be much more work than expected.
 
-
+Previously when player A made a move: (G is the game state)
+<pre>
+ 
+ ______________
+ |            |
+ |  Postgres  |
+ |            |
+ ^^^^^^^^^^^^^^
+      |
+      | previousG
+      |
+      ▼
+newG = previousG + move
+  __________
+  |        | --- playerView(newG, 0) ---> Player 0
+  |  bgio  | --- playerView(newG, 1) ---> Player 1
+  |        | --- playerView(newG, 2) ---> Player 2
+  ^^^^^^^^^^ 
+</pre>
 
 
 
