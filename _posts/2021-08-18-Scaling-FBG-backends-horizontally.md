@@ -182,26 +182,34 @@ I found out a way to pass the [redis adapter](https://github.com/socketio/socket
 
 I sent a message to the boardgame.io gitter channel:
 ```
-hello folks... I am trying to scale boardgame.io horizontally, and 
-even though I was able to make the socket.io broadcast to multiple 
-servers using a redis adapter, it doesnt work. 
+hello folks... I am trying to scale
+boardgame.io horizontally, and even though 
+I was able to make the socket.io broadcast
+to multiple servers using a redis adapter, 
+it doesnt work. 
 
-My hypothesis is that we are keeping some state on the memory of 
-the server, and that state is not being updated with new messages 
-coming from peer socket.io servers, only when the client is 
-directly connected to it. This would make the in-memory state of 
-different replicas of the same server to drift apart. 
+My hypothesis is that we are keeping some 
+state on the memory of the server, and that
+state is not being updated with new messages 
+coming from peer socket.io servers, only 
+when the client is directly connected to it. 
+This would make the in-memory state of 
+different replicas of the same server to 
+drift apart. 
 
-Does anybody know what state we keep in-memory on the server? (...)
+Does anybody know what state we keep
+in-memory on the server? (...)
 ```
 
 And bingo, the always helpful [Chris Swithinbank](https://github.com/delucis/) replied with this:
 ```
-Ohhh, might it be to do with the way we emit update events to 
-everyone? Basic schema is:
+Ohhh, might it be to do with the way we 
+emit update events to everyone? 
+Basic schema is:
 
-1. The server (each instance in your case) has a Map of match IDs 
-called roomInfo. Each match ID maps to a set of client IDs (socket 
+1. The server (each instance in your case) 
+has a Map of match IDs called roomInfo. Each 
+match ID maps to a set of client IDs (socket 
 IDs in this case). (source)
 
      roomInfo = {
@@ -209,16 +217,20 @@ IDs in this case). (source)
          ...
      }
 
-2. When a client connects to the server, we add its ID to the set 
-of client IDs for the relevant match (source). This will only 
-happen on the server instance they connect to.
+2. When a client connects to the server, we 
+add its ID to the set of client IDs for the 
+relevant match (source). This will only happen 
+on the server instance they connect to.
 
-3. When a client makes an action, we run it through the reducer 
-etc., then emit the updated state to connected clients. But we 
-do this by saying: give me the set of client IDs for this match 
-ID; now send the update to each client ID (source).
+3. When a client makes an action, we run it 
+through the reducer etc., then emit the 
+updated state to connected clients. But we
+do this by saying: give me the set of client 
+IDs for this match ID; now send the update 
+to each client ID (source).
 
-Say there are two servers you might have a situation like this:
+Say there are two servers you might have a 
+situation like this:
 
 Server 1                      Server 2
 
@@ -226,17 +238,19 @@ roomInfo = {                  roomInfo = {
   matchA -> [ client1 ]         matchA -> [ client2 ]
 }                             }
 
-In this case, server 1 doesn’t know about client 2 and server 2 
-doesn’t know about client 1, so the two clients won’t actually 
+In this case, server 1 doesn’t know about 
+client 2 and server 2 doesn’t know about 
+client 1, so the two clients won’t actually 
 emit to each other.
 ```
 
 But... Why wasn't boardgame.io using a [socket.io room](https://socket.io/docs/v3/rooms/index.html) per match instead of sending a separate message to each connected player? If that was the case, everything would work out of the box. Chris replied:
 
 ```
-(...) One thing we do is store the player ID for each client 
-so that we can run the playerView for each of them when updating 
-state. (...)
+(...) One thing we do is store the 
+player ID for each client so that we can
+run the playerView for each of them when 
+updating state. (...)
 ```
 
 *playerView* is the function that allows a very popular feature in boardgame.io: [Secret state](https://boardgame.io/documentation/#/secret-state?id=secret-state). It inhibits cheating by only sending the relevant subset of the state for each player. For instance, if you were playing poker, we would not send the poker hands of your adversaries to your browser. This would only be known by the server.
@@ -339,8 +353,8 @@ We implemented this idea by first [refactoring the existing interfaces](https://
 Finally, we were able to scale the boardgame.io deployment to multiple pods in production a few days ago 🎉:
 ```
 $ kubectl get deployments -n fbg-prod
-NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
-fbg-prod-bgio         2/2     2            2           2d2h
-fbg-prod-fbg-server   2/2     2            2           2d2h
-fbg-prod-web          2/2     2            2           2d2h
+NAME                  READY   UP-TO-DATE
+fbg-prod-bgio         2/2     2         
+fbg-prod-fbg-server   2/2     2         
+fbg-prod-web          2/2     2           
 ```
