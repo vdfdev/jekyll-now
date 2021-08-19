@@ -10,7 +10,7 @@ title: Projects
 
 ## boardgame.io
 
-[boardgame.io](https://boardgame.io) is a library for streamlining the creation of board games. It provides tools for easily coding game rules, and functionalities like easily setting up multiplayer connections. I am a mantainer for this project.
+[boardgame.io](https://boardgame.io) is a FOSS library for streamlining the creation of board games. It provides tools for easily coding game rules, and functionalities like easily setting up multiplayer connections. I am a mantainer for this project.
 
 ## vdf.dev
 
