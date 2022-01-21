@@ -41,7 +41,7 @@ To that end, `salt '*' pillar.get <<PILLAR KEY>>` has a gotcha: it will come emp
 
 # Gotcha 3: Salt swallowing some errors
 
-Most of the exceptions thrown during the execution of the renderer could be seen at `/var/logs/salt/master`, which made them easy to debug. However, when using the same renderer in another machine, the pillar would just not generate any values and also no errors. It took me a long time to figure out that Salt was swallowing an error on the renderer, given the incosistent behavior. The issue was with a `import` statement because of a missing dependency.
+Most of the exceptions thrown during the execution of the renderer could be seen at `/var/logs/salt/master`, which made them easy to debug. However, when using the same renderer in another machine, the pillar would just not generate any values and also show no errors. It took me a long time to figure out that Salt was swallowing an error on the renderer, given the incosistent behavior. The issue was with a `import` statement because of a missing dependency.
 
 The gotcha here to avoid salt swallowing the error is to use the `-ldebug` flag and specifically ask salt to only render the pillar data:
 
