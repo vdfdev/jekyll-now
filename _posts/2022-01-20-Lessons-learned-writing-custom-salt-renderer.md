@@ -39,4 +39,14 @@ While in the beginning I tried to check that the pillar was being rendered corre
 
 To that end, `salt '*' pillar.get <<PILLAR KEY>>` has a gotcha: it will come empty until you do `salt '*' saltutil.refresh_pillar`. Same for `salt '*' pillar.raw`. On the other hand, `salt '*' pillar.data` does not require refreshing it beforehand. However, I felt that the usability of `pillar.data` to be poor given that it outputs all pillar data, requiring you to do extra processing to filter only the desired pillar key.
 
-# Gotcha 3: Swallowing of some errors
+# Gotcha 3: Salt swallowing some errors
+
+Most of the exceptions thrown during the execution of the renderer could be seen at `/var/logs/salt/master`, which made them easy to debug. However, when using the same renderer in another machine, the pillar would just not generate any values and also no errors. It took me a long time to figure out that Salt was swallowing an error on the renderer, given the incosistent behavior. The issue was with a `import` statement because of a missing dependency.
+
+The gotcha here to avoid salt swallowing the error is to use the `-ldebug` flag, and specifically ask salt to only render the pillar data:
+
+```
+salt-call --local --ldebug slsutil.renderer /path/to/pillar.sls
+```
+
+Salt seems to be a very interesting technology, and hopefully you can avoid some of these issues :).
