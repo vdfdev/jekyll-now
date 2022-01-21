@@ -3,6 +3,8 @@ layout: post
 title: Lessons learned writing custom Salt renderer.
 ---
 
+# Context
+
 I had to write a custom [SaltStack](https://saltproject.io/) renderer, and while the [concept](https://docs.saltproject.io/en/latest/ref/renderers/index.html) sounded simple, it was much more painful than I expected. I ran into several "gotchas" as a beginner, so I list them here for you to learn from my mistakes.
 
 For consistency purposes, I changed all references to the custom renderer to be called "foo", as if I were adding `salt://_renderes/foo.py`.
@@ -41,12 +43,14 @@ To that end, `salt '*' pillar.get <<PILLAR KEY>>` has a gotcha: it will come emp
 
 # Gotcha 3: Salt swallowing some errors
 
-Most of the exceptions thrown during the execution of the renderer could be seen at `/var/logs/salt/master`, which made them easy to debug. However, when using the same renderer in another machine, the pillar would just not generate any pillar values and also no errors. It took me a long time to figure out that Salt was swallowing an error on the renderer, given the incosistent behavior. The issue was with a `import` statement because of a missing dependency.
+Most of the exceptions thrown during the execution of the renderer could be seen at `/var/logs/salt/master`, which made them easy to debug. However, when using the same renderer in another machine, the pillar would just not generate any values and also no errors. It took me a long time to figure out that Salt was swallowing an error on the renderer, given the incosistent behavior. The issue was with a `import` statement because of a missing dependency.
 
 The gotcha here to avoid salt swallowing the error is to use the `-ldebug` flag and specifically ask salt to only render the pillar data:
 
 ```
 salt-call --local --ldebug slsutil.renderer /path/to/pillar.sls
 ```
+
+# Conclusions
 
 Salt seems to be a very interesting technology, and I hope this helps you avoid some of these issues :).
