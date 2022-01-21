@@ -51,6 +51,6 @@ The gotcha here to avoid salt swallowing the error is to use the `-ldebug` flag 
 salt-call --local --ldebug slsutil.renderer /path/to/pillar.sls
 ```
 
-# Conclusions
+# Conclusion
 
 Salt seems to be a very interesting technology, and I hope this helps you avoid some of these issues :).
