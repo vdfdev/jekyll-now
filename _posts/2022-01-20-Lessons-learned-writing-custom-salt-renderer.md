@@ -15,7 +15,7 @@ The first issue I faced was with this error on the pillar trying to use the new 
 The renderer "yaml | foo" is not available
 ```
 
-This error was happening even though I would follow the instructions to use any of the commands below:
+This error was happening even though I had followed the instructions to use the commands below:
 
 ```
 salt '*' saltutil.sync_renderers
@@ -31,4 +31,12 @@ The gotcha here is that `salt '*'` actually executes commands on the minions, wh
 salt-call saltutil.sync_renderers
 ```
 
-# Gotcha 2: Renderer is not available
+This `salt-call` should copy the new renderer to `/var/cache/salt/master/extmods`, and you can check this folder on the master to make sure the content matches `salt://_renderes/foo.py`.
+
+# Gotcha 2: Pillar needs to be refreshed
+
+While in the beginning I tried to check that the pillar was being rendered correctly by creating a new state that consumed it, a better approach is to check directly the Pillar values sent from the master to the minions.
+
+To that end, `salt '*' pillar.get <<PILLAR KEY>>` has a gotcha: it will come empty until you do `salt '*' saltutil.refresh_pillar`. Same for `salt '*' pillar.raw`. On the other hand, `salt '*' pillar.data` does not require refreshing it beforehand. However, I felt that the usability of `pillar.data` to be poor given that it outputs all pillar data, requiring you to do extra processing to filter only the desired pillar key.
+
+# Gotcha 3: Swallowing of some errors
