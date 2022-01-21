@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Lessons learned writing custom Salt renderer.
+title: Lessons learned writing a custom Salt renderer.
 ---
 
 I had to write a custom [SaltStack](https://saltproject.io/) renderer, and while the [concept](https://docs.saltproject.io/en/latest/ref/renderers/index.html) sounded simple, it was much more painful than I expected. I ran into several "gotchas" as a beginner, so I list them here for you to learn from my mistakes.
