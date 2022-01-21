@@ -3,7 +3,7 @@ layout: post
 title: Lessons learned writing a custom Salt renderer.
 ---
 
-I had to write a custom [SaltStack](https://saltproject.io/) renderer, and while the [concept](https://docs.saltproject.io/en/latest/ref/renderers/index.html) sounded simple, it was much more painful than I expected. I ran into several "gotchas" as a beginner, so I list them here for you to learn from my mistakes.
+I had to write a custom [SaltStack](https://saltproject.io/) renderer, and while the [concept](https://docs.saltproject.io/en/latest/ref/renderers/index.html) sounded simple, it took longer than I expected. I ran into several "gotchas" as a beginner, so I list them here for you to learn from my mistakes.
 
 For consistency purposes, I changed all references to the custom renderer to be called "foo", as if I were adding `salt://_renderes/foo.py`.
 
