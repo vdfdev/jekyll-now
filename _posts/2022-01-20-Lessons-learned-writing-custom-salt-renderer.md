@@ -31,7 +31,7 @@ The gotcha here is that `salt '*'` actually executes commands on the minions, wh
 salt-run saltutil.sync_renderers
 ```
 
-The `salt-call` should copy the new renderer to `/var/cache/salt/master/extmods`, and you can check this folder on the master to make sure the content matches `salt://_renderes/foo.py`.
+The `salt-run` should copy the new renderer to `/var/cache/salt/master/extmods`, and you can check this folder on the master to make sure the content matches `salt://_renderes/foo.py`.
 
 # Gotcha 2: Pillar needs to be refreshed
 
