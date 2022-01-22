@@ -25,7 +25,7 @@ salt '*' state.apply
 
 These commands would even print out the `foo.py` being sent to the minions. 
 
-The gotcha here is that `salt '*'` actually executes commands on the minions, while the pillar rendering happens on the master. So, instead, use `salt-call`:
+The gotcha here is that `salt '*'` actually executes commands on the minions, while the pillar rendering happens on the master. So, instead, use `salt-run`:
 
 ```
 salt-run saltutil.sync_renderers
