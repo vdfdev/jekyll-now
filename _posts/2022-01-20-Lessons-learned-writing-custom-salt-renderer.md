@@ -28,7 +28,7 @@ These commands would even print out the `foo.py` being sent to the minions.
 The gotcha here is that `salt '*'` actually executes commands on the minions, while the pillar rendering happens on the master. So, instead, use `salt-call`:
 
 ```
-salt-call saltutil.sync_renderers
+salt-run saltutil.sync_renderers
 ```
 
 The `salt-call` should copy the new renderer to `/var/cache/salt/master/extmods`, and you can check this folder on the master to make sure the content matches `salt://_renderes/foo.py`.
